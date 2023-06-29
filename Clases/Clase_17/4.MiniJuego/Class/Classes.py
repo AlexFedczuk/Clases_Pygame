@@ -26,27 +26,29 @@ class Homero:
         if lista_de_inputs[pygame.K_LEFT]:
             nueva_posicion_x_homero = self.rectangulo.x + (-valor_de_movimiento)
             nueva_posicion_x_boca = self.rectangulo_de_la_boca.x + (-valor_de_movimiento)
-            self.mover_izquierda(nueva_posicion_x_homero, nueva_posicion_x_boca, tamanio_ventana)
+            self.mover_en_eje_x(nueva_posicion_x_homero, nueva_posicion_x_boca, tamanio_ventana)
         elif lista_de_inputs[pygame.K_RIGHT]:   
             nueva_posicion_x_homero = self.rectangulo.x + valor_de_movimiento
             nueva_posicion_x_boca = self.rectangulo_de_la_boca.x + valor_de_movimiento
-            self.mover_derecha(nueva_posicion_x_homero, nueva_posicion_x_boca, tamanio_ventana)
+            self.mover_en_eje_x(nueva_posicion_x_homero, nueva_posicion_x_boca, tamanio_ventana)
+        elif lista_de_inputs[pygame.K_UP]:   
+            nueva_posicion_y_homero = self.rectangulo.y + (-valor_de_movimiento)
+            nueva_posicion_y_boca = self.rectangulo_de_la_boca.y + (-valor_de_movimiento)
+            self.mover_en_eje_y(nueva_posicion_y_homero, nueva_posicion_y_boca, tamanio_ventana)
+        elif lista_de_inputs[pygame.K_DOWN]:   
+            nueva_posicion_y_homero = self.rectangulo.y + valor_de_movimiento
+            nueva_posicion_y_boca = self.rectangulo_de_la_boca.y + valor_de_movimiento
+            self.mover_en_eje_y(nueva_posicion_y_homero, nueva_posicion_y_boca, tamanio_ventana)
 
-
-    def mover_izquierda(self, nueva_posicion_x_homero:int, nueva_posicion_x_boca:int, tamanio_ventana:tuple):
+    def mover_en_eje_x(self, nueva_posicion_x_homero:int, nueva_posicion_x_boca:int, tamanio_ventana:tuple):
         if nueva_posicion_x_homero > (tamanio_ventana[0] - tamanio_ventana[0]) and nueva_posicion_x_homero < (tamanio_ventana[0] - 200):
             self.rectangulo.x = nueva_posicion_x_homero
             self.rectangulo_de_la_boca.x = nueva_posicion_x_boca
-    
-    def mover_arriba(self, nueva_posicion_x_homero:int, nueva_posicion_x_boca:int, tamanio_ventana:tuple):
-        if nueva_posicion_x_homero > (tamanio_ventana[0] - tamanio_ventana[0]) and nueva_posicion_x_homero < (tamanio_ventana[0] - 200):
-            self.rectangulo.x = nueva_posicion_x_homero
-            self.rectangulo_de_la_boca.x = nueva_posicion_x_boca
 
-    def mover_derecha(self, nueva_posicion_x_homero:int, nueva_posicion_x_boca:int, tamanio_ventana:tuple):
-        if nueva_posicion_x_homero > (tamanio_ventana[0] - tamanio_ventana[0]) and nueva_posicion_x_homero < (tamanio_ventana[0] - 200):
-            self.rectangulo.x = nueva_posicion_x_homero
-            self.rectangulo_de_la_boca.x = nueva_posicion_x_boca
+    def mover_en_eje_y(self, nueva_posicion_y_homero:int, nueva_posicion_y_boca:int, tamanio_ventana:tuple):
+        if nueva_posicion_y_homero > (tamanio_ventana[1] - tamanio_ventana[1]) and nueva_posicion_y_homero < (tamanio_ventana[1] - 200):
+            self.rectangulo.y = nueva_posicion_y_homero
+            self.rectangulo_de_la_boca.y = nueva_posicion_y_boca
         
     def mostrar_en_pantalla(self, ventana:object, bandera:bool):
         if bandera == False:
