@@ -16,25 +16,43 @@ class Homero:
         self.rectangulo_de_la_boca = pygame.Rect(x_de_la_boca, y_de_la_boca, ancho_de_la_boca, ancho_de_la_boca)
         self.rectangulo_de_la_boca.x = 490
         self.rectangulo_de_la_boca.y = 668
+        # El contador del Score del pj
         self.puntaje = 0
-        homero = {}
-        homero["superficie"] = self.imagen
-        homero["rectangulo"] = self.rectangulo
-        homero["rectangulo_de_la_boca"] = self.rectangulo_de_la_boca
 
-        # return homero
     def aumentar_puntaje(self, puntos_aumentados):
         self.puntaje += puntos_aumentados
 
-    def mover_imagen(self, sentido:str, velocidad_desplazamiento:int, tamanio_pantalla):#(LARGO,ALTO)
-        if sentido == "vertical":
-            self.rectangulo.y += velocidad_desplazamiento
-            if self.rectangulo.top > tamanio_pantalla[1]:
-                self.rectangulo.bottom = 0
+    def realizar_movimiento(self, lista_de_inputs:list, valor_de_movimiento:int, tamanio_ventana:tuple):
+        if lista_de_inputs[pygame.K_LEFT]:
+            nueva_posicion_x_homero = self.rectangulo.x + (-valor_de_movimiento)
+            nueva_posicion_x_boca = self.rectangulo_de_la_boca.x + (-valor_de_movimiento)
+            self.mover_izquierda(nueva_posicion_x_homero, nueva_posicion_x_boca, tamanio_ventana)
+        elif lista_de_inputs[pygame.K_RIGHT]:   
+            nueva_posicion_x_homero = self.rectangulo.x + valor_de_movimiento
+            nueva_posicion_x_boca = self.rectangulo_de_la_boca.x + valor_de_movimiento
+            self.mover_derecha(nueva_posicion_x_homero, nueva_posicion_x_boca, tamanio_ventana)
+
+
+    def mover_izquierda(self, nueva_posicion_x_homero:int, nueva_posicion_x_boca:int, tamanio_ventana:tuple):
+        if nueva_posicion_x_homero > (tamanio_ventana[0] - tamanio_ventana[0]) and nueva_posicion_x_homero < (tamanio_ventana[0] - 200):
+            self.rectangulo.x = nueva_posicion_x_homero
+            self.rectangulo_de_la_boca.x = nueva_posicion_x_boca
+    
+    def mover_arriba(self, nueva_posicion_x_homero:int, nueva_posicion_x_boca:int, tamanio_ventana:tuple):
+        if nueva_posicion_x_homero > (tamanio_ventana[0] - tamanio_ventana[0]) and nueva_posicion_x_homero < (tamanio_ventana[0] - 200):
+            self.rectangulo.x = nueva_posicion_x_homero
+            self.rectangulo_de_la_boca.x = nueva_posicion_x_boca
+
+    def mover_derecha(self, nueva_posicion_x_homero:int, nueva_posicion_x_boca:int, tamanio_ventana:tuple):
+        if nueva_posicion_x_homero > (tamanio_ventana[0] - tamanio_ventana[0]) and nueva_posicion_x_homero < (tamanio_ventana[0] - 200):
+            self.rectangulo.x = nueva_posicion_x_homero
+            self.rectangulo_de_la_boca.x = nueva_posicion_x_boca
+        
+    def mostrar_en_pantalla(self, ventana:object, bandera:bool):
+        if bandera == False:
+            ventana.blit(pygame.transform.flip(self.imagen, True, False), self.rectangulo)
         else:
-            self.rectangulo.x += velocidad_desplazamiento
-            if self.rectangulo.left > tamanio_pantalla[0]:
-                self.rectangulo.right = 0
+            ventana.blit(self.imagen, self.rectangulo)
 
     def detectar_colision(self, otra_imagen, color_original, color_de_colision):
         if self.rectangulo.colliderect(otra_imagen.rectangulo):
@@ -88,9 +106,14 @@ class Dona:
         if rectangulo_boca.colliderect(rectangulo_dona):
             homero.aumentar_puntaje(100)
             print("La comio!")
+            self.producir_sonido("Clases\Clase_17\\4.MiniJuego\Recursos\clic.wav", 0.1)
             dona.regenerar_dona()
         elif rectangulo_dona.y > 800:
             dona.regenerar_dona()
+
+    def producir_sonido(self, path_sonido:str, volumen:float):
+        sonido = Sonido(path_sonido, volumen)
+        sonido.sonido.play()
     
     def regenerar_dona(self):
         self.rectangulo.x = random.randrange(0, 740, 60)
