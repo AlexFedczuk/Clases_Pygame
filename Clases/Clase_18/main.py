@@ -1,30 +1,48 @@
 # https://www.youtube.com/watch?v=WTRXYD1w4hs&list=PLE9qW09sJEPQBZx_WJM46jkrtlY9FFlxb&index=15
 
-import pygame
+import pygame, sys
 from configuraciones import *
+from modo import *
 
 ######################### FUNCIONES DE MOVIMEINTO ##############################
 def mover_personaje(rectangulo_personaje:pygame.Rect, velocidad:int):
     rectangulo_personaje.x += velocidad
 
-def animar_personaje(pantalla, rectangulo_personaje, accion_personaje:list, contador_pasos:int):
+def animar_personaje(pantalla:object, rectangulo_personaje:pygame.Rect, accion_personaje:list, contador_pasos:int):
     largo = len(accion_personaje)
+
     if contador_pasos >= largo:
         contador_pasos = 0
 
     pantalla.blit(accion_personaje[contador_pasos], rectangulo_personaje)
+    # pygame.transform.flip(self.imagen, True, False), self.rectangulo
     contador_pasos += 1
 
-def actualizar_pantalla(pantalla, rectangulo_personaje, que_hace, velocidad, contador_pasos:int):
+    return contador_pasos
+
+def actualizar_pantalla(pantalla:object, fondo_pantalla:object, rectangulo_personaje:pygame.Rect, que_hace:str, velocidad:int, contador_pasos:int, ultima_direccion:str):
+    PANTALLA.blit(fondo_pantalla, (0,0))
+
     match que_hace:
         case "Derecha":
-            animar_personaje(pantalla, rectangulo_personaje, personaje_corriendo, contador_pasos)
+            contador_pasos = animar_personaje(pantalla, rectangulo_personaje, PERSONAJE_CORRIENDO_MIRANDO_DERECHA, contador_pasos)
             mover_personaje(rectangulo_personaje, velocidad)
         case "Izquierda":
-            animar_personaje(pantalla, rectangulo_personaje, personaje_corriendo, contador_pasos)
-            mover_personaje(rectangulo_personaje, (-velocidad))
+            contador_pasos = animar_personaje(pantalla, rectangulo_personaje, PERSONAJE_CORRIENDO_MIRANDO_IZQUIERDA, contador_pasos)
+            mover_personaje(rectangulo_personaje, -velocidad)
         case "Quieto":
-            animar_personaje(pantalla, rectangulo_personaje, personaje_quieto) 
+            if ultima_direccion == "Derecha":
+                contador_pasos = animar_personaje(pantalla, rectangulo_personaje, PERSONAJE_QUIETO_MIRANDO_DERECHA, contador_pasos)
+            elif ultima_direccion == "Izquierda":
+                contador_pasos = animar_personaje(pantalla, rectangulo_personaje, PERSONAJE_QUIETO_MIRANDO_IZQUIERDA, contador_pasos)
+
+    return contador_pasos
+
+def girar_lista_imagenes(lista:list) -> list:
+    retorno = []
+    for imagen in lista:        
+        retorno.append(pygame.transform.flip(imagen, True, False))
+    return retorno
 ################################################################################
 
 # Configuracion de la pantalla
@@ -40,7 +58,6 @@ PANTALLA = pygame.display.set_mode(TAMANIO_PANTALLA)
 # Fondo de pantalla
 fondo_pantalla = pygame.image.load("Clases\Clase_18\Recursos\\fondo_de_pantalla.png")
 fondo_pantalla_rescalado = pygame.transform.scale(fondo_pantalla, TAMANIO_PANTALLA)
-PANTALLA.blit(fondo_pantalla_rescalado, (0,0))
 
 # Personaje
 x_inicial = ALTO_PANTALLA / 2
@@ -48,29 +65,39 @@ y_inicial = 750
 velocidad_mivimiento = 10
 contador_pasos = 0
 
-rectangulo_personaje = personaje_corriendo[0].get_rect()
+rectangulo_personaje = PERSONAJE_QUIETO_MIRANDO_DERECHA[0].get_rect()
 rectangulo_personaje.x = x_inicial
 rectangulo_personaje.y = y_inicial
 
 posicion_actual_x = 0
 
 que_hace = "Quieto"
+ultima_direccion = "Derecha"
 
 while True:
     RELOJ.tick(FPS)
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
             pygame.quit()
+            sys.exit(0)
+        elif evento.type == pygame.KEYDOWN:
+            if evento.key == pygame.K_F1:
+                cambiar_modo()
 
     teclas_presionadas = pygame.key.get_pressed()
 
     if (teclas_presionadas[pygame.K_RIGHT]):
         que_hace = "Derecha"
+        ultima_direccion = "Derecha"
     elif (teclas_presionadas[pygame.K_LEFT]):
         que_hace = "Izquierda"
+        ultima_direccion = "Izquierda"
     else:
         que_hace = "Quieto"
 
-    actualizar_pantalla(PANTALLA, que_hace, rectangulo_personaje, velocidad_mivimiento)
+    contador_pasos = actualizar_pantalla(PANTALLA, fondo_pantalla_rescalado, rectangulo_personaje, que_hace, velocidad_mivimiento, contador_pasos, ultima_direccion)
+
+    if get_mode():
+        pygame.draw.rect(PANTALLA, "Red", rectangulo_personaje, 2)
 
     pygame.display.update()
