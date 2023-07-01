@@ -20,7 +20,10 @@ def animar_personaje(pantalla:object, rectangulo_personaje:pygame.Rect, accion_p
 
     return contador_pasos
 
-def actualizar_pantalla(pantalla:object, fondo_pantalla:object, rectangulo_personaje:pygame.Rect, que_hace:str, velocidad:int, contador_pasos:int, ultima_direccion:str):
+def actualizar_pantalla(pantalla:object, fondo_pantalla:object, rectangulo_personaje:pygame.Rect, que_hace:str, velocidad:int, contador_pasos:int, ultima_direccion:str,
+                        bandera_esta_saltando:bool, potencia_salto:int):
+    global desplazamiento_y
+    
     PANTALLA.blit(fondo_pantalla, (0,0))
 
     match que_hace:
@@ -30,6 +33,11 @@ def actualizar_pantalla(pantalla:object, fondo_pantalla:object, rectangulo_perso
         case "Izquierda":
             contador_pasos = animar_personaje(pantalla, rectangulo_personaje, PERSONAJE_CORRIENDO_MIRANDO_IZQUIERDA, contador_pasos)
             mover_personaje(rectangulo_personaje, -velocidad)
+        case "Salta":
+            if not bandera_esta_saltando:
+                bandera_esta_saltando = True
+                desplazamiento_y = potencia_salto
+                pass
         case "Quieto":
             if ultima_direccion == "Derecha":
                 contador_pasos = animar_personaje(pantalla, rectangulo_personaje, PERSONAJE_QUIETO_MIRANDO_DERECHA, contador_pasos)
@@ -68,8 +76,14 @@ contador_pasos = 0
 rectangulo_personaje = PERSONAJE_QUIETO_MIRANDO_DERECHA[0].get_rect()
 rectangulo_personaje.x = x_inicial
 rectangulo_personaje.y = y_inicial
-
 posicion_actual_x = 0
+
+# SALTO
+gravedad = 1
+potencia_salto = -15
+velocidad_limite_caida = 15
+bandera_esta_saltando = False
+desplazamiento_y = 0
 
 que_hace = "Quieto"
 ultima_direccion = "Derecha"
@@ -92,10 +106,12 @@ while True:
     elif (teclas_presionadas[pygame.K_LEFT]):
         que_hace = "Izquierda"
         ultima_direccion = "Izquierda"
+    elif (teclas_presionadas[pygame.K_UP]):
+        que_hace = "Salta"
     else:
         que_hace = "Quieto"
 
-    contador_pasos = actualizar_pantalla(PANTALLA, fondo_pantalla_rescalado, rectangulo_personaje, que_hace, velocidad_mivimiento, contador_pasos, ultima_direccion)
+    contador_pasos = actualizar_pantalla(PANTALLA, fondo_pantalla_rescalado, rectangulo_personaje, que_hace, velocidad_mivimiento, contador_pasos, ultima_direccion, bandera_esta_saltando, potencia_salto)
 
     if get_mode():
         pygame.draw.rect(PANTALLA, "Red", rectangulo_personaje, 2)
