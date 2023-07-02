@@ -12,6 +12,7 @@ class Jugador:
         # -
         self.velocidad_de_movimiento = 10
         self.contador_pasos = 0
+        self.contador_imagenes_salto = 0
         # Gravedad
         self.gravedad = 1
         self.potencia_salto = -15
@@ -29,7 +30,7 @@ class Jugador:
         self.saltando_mirando_derecha = PERSONAJE_SALTANDO_MIRANDO_DERECHA
         self.saltando_mirando_izquierda = PERSONAJE_SALTANDO_MIRANDO_IZQUIERDA
 
-    def aplicar_gravedad(self, pantalla:object, suelo:object) -> None:
+    """def aplicar_gravedad(self, pantalla:object, suelo:object) -> None:
         if self.bandera_esta_saltando:
             if self.ultima_direccion == "Derecha":
                     self.animar(pantalla, self.saltando_mirando_derecha)
@@ -55,7 +56,7 @@ class Jugador:
         self.contador_pasos += 1
 
     def mover(self):
-        self.rectangulo.x += self.velocidad_de_movimiento
+        self.rectangulo.x += self.velocidad_de_movimiento"""
 
     def actualizar_pantalla(self, pantalla:object, suelo:object) -> None:
     
@@ -81,9 +82,19 @@ class Jugador:
         self.aplicar_gravedad(pantalla, suelo)
 
 class Suelo:
-    def __init__(self, rectangulo_jugador:pygame.Rect):
-        self.rectangulo = pygame.Rect(0, 0, 1900, 20)
-        self.rectangulo.top = rectangulo_jugador.bottom
+    def __init__(self, path_imagen:str, tamanio:int, rectangulo_x:int, rectangulo_y:int, ancho_rectangulo:int, alto_rectangulo:int, jugador:object):
+        self.imagen = pygame.image.load(path_imagen)
+        self.imagen = pygame.transform.scale(self.imagen, tamanio)
+        self.rectangulo = pygame.Rect(rectangulo_x, rectangulo_y, ancho_rectangulo, alto_rectangulo)
+        self.rectangulo.top = jugador.rectangulo.bottom
+
+class Plataforma:
+    def __init__(self, tamanio:tuple, path_imagen:str, rectangulo_x, rectangulo_y):
+        self.imagen = pygame.image.load(path_imagen)
+        self.imagen = pygame.transform.scale(self.imagen, tamanio)
+        self.rectangulo = self.imagen.get_rect()
+        self.rectangulo.x = rectangulo_x
+        self.rectangulo.y = rectangulo_y
 
 class Pantalla:
     def __init__(self, tamanio:tuple, path_imagen:str):

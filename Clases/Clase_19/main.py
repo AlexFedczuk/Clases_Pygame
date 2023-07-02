@@ -3,7 +3,7 @@
 import pygame, sys
 from configuraciones import *
 from modo import *
-from clases import Jugador, Suelo, Pantalla
+from clases import Jugador, Suelo, Pantalla, Plataforma
 from funciones import *
 
 pygame.init()
@@ -16,7 +16,13 @@ pantalla = Pantalla(TAMANIO_PANTALLA, "Clases\Clase_18\Recursos\\fondo_de_pantal
 jugador = Jugador(PERSONAJE_QUIETO_MIRANDO_DERECHA[0])
 
 # Superficie
-suelo = Suelo(jugador.rectangulo)
+suelo = Suelo("Clases\Clase_19\Recursos\suelo\\2.png", (ANCHO_PANTALLA, 50), 0, ANCHO_PANTALLA, ANCHO_PANTALLA, 50, jugador)
+
+# Plataforma
+lista_plataformas = [
+    suelo,
+    Plataforma((100, 20), "Clases\Clase_19\Recursos\plataforma\\14.png", 800, 700)
+]
 
 while True:
     RELOJ.tick(FPS)
@@ -41,10 +47,12 @@ while True:
     else:
         jugador.que_hace = "Quieto"
 
-    actualizar_pantalla(pantalla, jugador, suelo)
+    actualizar_pantalla(pantalla, jugador, lista_plataformas)
 
     if get_mode():
         pygame.draw.rect(pantalla.pantalla, "Red", jugador.rectangulo, 2)
         pygame.draw.rect(pantalla.pantalla, "Blue", suelo.rectangulo, 2)
+        for plataforma in lista_plataformas:
+            pygame.draw.rect(pantalla.pantalla, "Yellow", plataforma.rectangulo, 2)
 
     pygame.display.update()
