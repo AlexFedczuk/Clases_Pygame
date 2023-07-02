@@ -1,5 +1,9 @@
 import pygame
 
+ANCHO_PANTALLA, ALTO_PANTALLA = 1900, 1000
+TAMANIO_PANTALLA = (ANCHO_PANTALLA, ALTO_PANTALLA)
+FPS = 18
+
 def cargar_imagenes_lista(path_primer_imagen:str, cantidad_imagnes:int) -> list:
     lista_cargada = []
 
@@ -34,7 +38,6 @@ PERSONAJE_QUIETO_MIRANDO_DERECHA = [
     pygame.image.load("Clases\Clase_18\Recursos\jugador\quieto\Idle (9).png"),
     pygame.image.load("Clases\Clase_18\Recursos\jugador\quieto\Idle (10).png")
 ]
-# PERSONAJE_QUIETO_MIRANDO_DERECHA = cargar_imagenes_lista(f"Clases\Clase_18\Recursos\jugador\quieto\Idle ({0}).png", 10)
 PERSONAJE_QUIETO_MIRANDO_DERECHA = rescalar_lista_imagenes(PERSONAJE_QUIETO_MIRANDO_DERECHA, TAMANIO)
 PERSONAJE_QUIETO_MIRANDO_IZQUIERDA = girar_lista_imagenes(PERSONAJE_QUIETO_MIRANDO_DERECHA)
 
@@ -51,7 +54,7 @@ PERSONAJE_CORRIENDO_MIRANDO_DERECHA = [
 PERSONAJE_CORRIENDO_MIRANDO_DERECHA = rescalar_lista_imagenes(PERSONAJE_CORRIENDO_MIRANDO_DERECHA, TAMANIO)
 PERSONAJE_CORRIENDO_MIRANDO_IZQUIERDA = girar_lista_imagenes(PERSONAJE_CORRIENDO_MIRANDO_DERECHA)
 
-personaje_saltando = [
+PERSONAJE_SALTANDO_MIRANDO_DERECHA = [
     pygame.transform.scale(pygame.image.load("Clases\Clase_18\Recursos\jugador\saltando\Jump (1).png"), TAMANIO),
     pygame.transform.scale(pygame.image.load("Clases\Clase_18\Recursos\jugador\saltando\Jump (2).png"), TAMANIO),
     pygame.transform.scale(pygame.image.load("Clases\Clase_18\Recursos\jugador\saltando\Jump (3).png"), TAMANIO),
@@ -63,3 +66,5 @@ personaje_saltando = [
     pygame.transform.scale(pygame.image.load("Clases\Clase_18\Recursos\jugador\saltando\Jump (9).png"), TAMANIO),
     pygame.transform.scale(pygame.image.load("Clases\Clase_18\Recursos\jugador\saltando\Jump (10).png"), TAMANIO)
 ]
+PERSONAJE_SALTANDO_MIRANDO_DERECHA = rescalar_lista_imagenes(PERSONAJE_SALTANDO_MIRANDO_DERECHA, TAMANIO)
+PERSONAJE_SALTANDO_MIRANDO_IZQUIERDA = girar_lista_imagenes(PERSONAJE_SALTANDO_MIRANDO_DERECHA)
