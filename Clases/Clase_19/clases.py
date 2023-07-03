@@ -9,6 +9,10 @@ class Jugador:
         self.rectangulo = self.imagen.get_rect() # Obtengo el rectangulo de la imagen!
         self.rectangulo.x = 1000 / 2
         self.rectangulo.y = 750
+        self.rectangulo_bajo = pygame.Rect(self.rectangulo.left, self.rectangulo.bottom - 6, self.rectangulo.width, 6)
+        self.rectangulo_derecho = pygame.Rect(self.rectangulo.right - 2, self.rectangulo.top, 2, self.rectangulo.height)
+        self.rectangulo_izquierdo = pygame.Rect(self.rectangulo.left, self.rectangulo.top, 2, self.rectangulo.height)
+        self.rectangulo_superior = pygame.Rect(self.rectangulo.left, self.rectangulo.top, self.rectangulo.width, 6)
         # -
         self.velocidad_de_movimiento = 10
         self.contador_pasos = 0
