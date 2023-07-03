@@ -17,29 +17,26 @@ def aplicar_gravedad(pantalla:object, jugador:object, suelo:object, lista_plataf
         if jugador.desplazamiento_y + jugador.gravedad < jugador.velocidad_limite_caida:
             jugador.desplazamiento_y += jugador.gravedad
 
-    if jugador.diccionario_rectangulos["rectangulo_inferior"].colliderect(suelo.diccionario_rectangulos["rectangulo_superior"]) == True:
-        jugador.bandera_esta_saltando = False
-        jugador.desplazamiento_y = 0
-        jugador.rectangulo.bottom = suelo.rectangulo.top
-    else:
-        for plataforma in lista_plataformas:            
-            if jugador.diccionario_rectangulos["rectangulo_inferior"].colliderect(plataforma.diccionario_rectangulos["rectangulo_superior"]):
-                jugador.desplazamiento_y = 0
-                jugador.bandera_esta_saltando = False                
-                jugador.rectangulo.bottom = plataforma.rectangulo.top
-                break
-            else:
-                jugador.bandera_esta_saltando = True
+    lista_aux_plataformas = []
+    lista_aux_plataformas.append(suelo)
+    for pltaforma in lista_plataformas:
+        lista_aux_plataformas.append(pltaforma)
 
-def comprobar_personaje_contacto(rectangulo:object, suelo:object, lista_rectangulos:list) -> bool:
-    if rectangulo.colliderect(suelo.diccionario_rectangulos["rectangulo_superior"]):
+    for plataforma in lista_aux_plataformas:            
+        if jugador.diccionario_rectangulos["rectangulo_inferior"].colliderect(plataforma.diccionario_rectangulos["rectangulo_superior"]):
+            jugador.desplazamiento_y = 0
+            jugador.bandera_esta_saltando = False                
+            jugador.rectangulo.bottom = plataforma.rectangulo.top
+            break
+        else:
+            jugador.bandera_esta_saltando = True
+
+def comprobar_contacto_rectangulos(rectangulo_uno:object, rectangulo_dos:object) -> bool:
+    if rectangulo_uno.colliderect(rectangulo_dos):
         return True
     else:
-        for rectangulo_lista in lista_rectangulos:
-            if rectangulo.colliderect(rectangulo_lista.diccionario_rectangulos["rectangulo_superior"]):
-                return True
-            else:
-                return False
+        return False
+
 
 
 def mover_personaje(jugador:object, velocidad_de_movimiento:int):
