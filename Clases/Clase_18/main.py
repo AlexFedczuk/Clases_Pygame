@@ -30,16 +30,7 @@ while True:
 
     teclas_presionadas = pygame.key.get_pressed()
 
-    if (teclas_presionadas[pygame.K_RIGHT] and jugador.rectangulo.colliderect(pantalla.rectangulo) and jugador.rectangulo.right != pantalla.rectangulo.right):# jugador.rectangulo.right < ANCHO_PANTALLA - jugador.velocidad_de_movimiento
-        jugador.que_hace = "Derecha"
-        jugador.ultima_direccion = "Derecha"
-    elif (teclas_presionadas[pygame.K_LEFT] and jugador.rectangulo.colliderect(pantalla.rectangulo) and jugador.rectangulo.left != pantalla.rectangulo.left):
-        jugador.que_hace = "Izquierda"
-        jugador.ultima_direccion = "Izquierda"
-    elif (teclas_presionadas[pygame.K_UP]):
-        jugador.que_hace = "Salta"
-    else:
-        jugador.que_hace = "Quieto"
+    registrar_ingreso_teclas(teclas_presionadas, pantalla, jugador)
 
     actualizar_pantalla(pantalla, jugador, suelo)
 

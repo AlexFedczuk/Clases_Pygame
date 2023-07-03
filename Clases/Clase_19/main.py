@@ -21,7 +21,7 @@ suelo = Suelo("Clases\Clase_19\Recursos\suelo\\2.png", (ANCHO_PANTALLA, 50), 0, 
 # Plataforma
 lista_plataformas = [
     suelo,
-    Plataforma((100, 20), "Clases\Clase_19\Recursos\plataforma\\14.png", 800, 700)
+    Plataforma((100, 20), "Clases\Clase_19\Recursos\plataforma\\14.png", 800, 800)
 ]
 
 while True:
@@ -36,23 +36,15 @@ while True:
 
     teclas_presionadas = pygame.key.get_pressed()
 
-    if (teclas_presionadas[pygame.K_RIGHT] and jugador.rectangulo.colliderect(pantalla.rectangulo) and jugador.rectangulo.right != pantalla.rectangulo.right):# jugador.rectangulo.right < ANCHO_PANTALLA - jugador.velocidad_de_movimiento
-        jugador.que_hace = "Derecha"
-        jugador.ultima_direccion = "Derecha"
-    elif (teclas_presionadas[pygame.K_LEFT] and jugador.rectangulo.colliderect(pantalla.rectangulo) and jugador.rectangulo.left != pantalla.rectangulo.left):
-        jugador.que_hace = "Izquierda"
-        jugador.ultima_direccion = "Izquierda"
-    elif (teclas_presionadas[pygame.K_UP]):
-        jugador.que_hace = "Salta"
-    else:
-        jugador.que_hace = "Quieto"
+    # Identificacion de teclas ingresadas en los eventos
+    identificar_input(teclas_presionadas, pantalla, jugador)
 
     actualizar_pantalla(pantalla, jugador, lista_plataformas)
 
     if get_mode():
-        pygame.draw.rect(pantalla.pantalla, "Red", jugador.rectangulo, 2)
-        pygame.draw.rect(pantalla.pantalla, "Blue", suelo.rectangulo, 2)
+        dibujar_rectangulos(pantalla, jugador.diccionario_rectangulos, "Red", 2)
         for plataforma in lista_plataformas:
-            pygame.draw.rect(pantalla.pantalla, "Yellow", plataforma.rectangulo, 2)
+            dibujar_rectangulos(pantalla, plataforma.diccionario_rectangulos, "Yellow", 2)
+        dibujar_rectangulos(pantalla, suelo.diccionario_rectangulos, "Blue", 2)
 
     pygame.display.update()

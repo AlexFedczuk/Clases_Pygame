@@ -1,5 +1,6 @@
 import pygame
 from configuraciones import *
+from funciones import *
 
 class Jugador:
     def __init__(self, imagen):
@@ -9,10 +10,7 @@ class Jugador:
         self.rectangulo = self.imagen.get_rect() # Obtengo el rectangulo de la imagen!
         self.rectangulo.x = 1000 / 2
         self.rectangulo.y = 750
-        self.rectangulo_bajo = pygame.Rect(self.rectangulo.left, self.rectangulo.bottom - 6, self.rectangulo.width, 6)
-        self.rectangulo_derecho = pygame.Rect(self.rectangulo.right - 2, self.rectangulo.top, 2, self.rectangulo.height)
-        self.rectangulo_izquierdo = pygame.Rect(self.rectangulo.left, self.rectangulo.top, 2, self.rectangulo.height)
-        self.rectangulo_superior = pygame.Rect(self.rectangulo.left, self.rectangulo.top, self.rectangulo.width, 6)
+        self.diccionario_rectangulos = {}
         # -
         self.velocidad_de_movimiento = 10
         self.contador_pasos = 0
@@ -33,6 +31,15 @@ class Jugador:
         self.corriendo_mirando_izquierda = PERSONAJE_CORRIENDO_MIRANDO_IZQUIERDA
         self.saltando_mirando_derecha = PERSONAJE_SALTANDO_MIRANDO_DERECHA
         self.saltando_mirando_izquierda = PERSONAJE_SALTANDO_MIRANDO_IZQUIERDA
+
+        obtener_rectangulos(self)
+        print(self.diccionario_rectangulos)
+
+    def obtener_rectangulos(self):
+        self.diccionario_rectangulos["rectangulo_inferior"] = pygame.Rect(self.rectangulo.left, self.rectangulo.bottom - 6, self.rectangulo.width, 6)
+        self.diccionario_rectangulos["rectangulo_derecho"] = pygame.Rect(self.rectangulo.right - 2, self.rectangulo.top, 2, self.rectangulo.height)
+        self.diccionario_rectangulos["rectangulo_izquierdo"] = pygame.Rect(self.rectangulo.left, self.rectangulo.top, 2, self.rectangulo.height)
+        self.diccionario_rectangulos["rectangulo_superior"] = pygame.Rect(self.rectangulo.left, self.rectangulo.top, self.rectangulo.width, 6)    
 
     """def aplicar_gravedad(self, pantalla:object, suelo:object) -> None:
         if self.bandera_esta_saltando:
@@ -91,6 +98,9 @@ class Suelo:
         self.imagen = pygame.transform.scale(self.imagen, tamanio)
         self.rectangulo = pygame.Rect(rectangulo_x, rectangulo_y, ancho_rectangulo, alto_rectangulo)
         self.rectangulo.top = jugador.rectangulo.bottom
+        self.diccionario_rectangulos = {}
+        
+        obtener_rectangulos(self)
 
 class Plataforma:
     def __init__(self, tamanio:tuple, path_imagen:str, rectangulo_x, rectangulo_y):
@@ -99,6 +109,9 @@ class Plataforma:
         self.rectangulo = self.imagen.get_rect()
         self.rectangulo.x = rectangulo_x
         self.rectangulo.y = rectangulo_y
+        self.diccionario_rectangulos = {}
+        
+        obtener_rectangulos(self)
 
 class Pantalla:
     def __init__(self, tamanio:tuple, path_imagen:str):
@@ -106,3 +119,6 @@ class Pantalla:
         self.fondo = pygame.image.load(path_imagen)
         self.fondo = pygame.transform.scale(self.fondo, tamanio)
         self.rectangulo = self.fondo.get_rect()
+        self.diccionario_rectangulos = {}
+        
+        obtener_rectangulos(self)

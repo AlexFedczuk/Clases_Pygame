@@ -1,19 +1,21 @@
 import pygame
 
 def aplicar_gravedad(pantalla:object, jugador:object, lista_plataformas:list):
-    if jugador.bandera_esta_saltando:
+    if jugador.bandera_esta_saltando == True:
         if jugador.ultima_direccion == "Derecha":
                 animar_personaje(pantalla, jugador, jugador.saltando_mirando_derecha)
         elif jugador.ultima_direccion == "Izquierda":
                 animar_personaje(pantalla, jugador, jugador.saltando_mirando_izquierda)
         
         jugador.rectangulo.y += jugador.desplazamiento_y
+        for clave in jugador.diccionario_rectangulos:
+            jugador.diccionario_rectangulos[clave].y += jugador.desplazamiento_y
 
         if jugador.desplazamiento_y + jugador.gravedad < jugador.velocidad_limite_caida:
             jugador.desplazamiento_y += jugador.gravedad
 
         for plataforma in lista_plataformas:            
-            if jugador.rectangulo.colliderect(plataforma.rectangulo):
+            if jugador.diccionario_rectangulos["rectangulo_inferior"].colliderect(plataforma.diccionario_rectangulos["rectangulo_superior"]):
                 jugador.bandera_esta_saltando = False
                 jugador.desplazamiento_y = 0
                 jugador.rectangulo.bottom = plataforma.rectangulo.top
@@ -21,8 +23,14 @@ def aplicar_gravedad(pantalla:object, jugador:object, lista_plataformas:list):
             else:
                 jugador.bandera_esta_saltando = True
 
+            # elif not (jugador.diccionario_rectangulos["rectangulo_inferior"].colliderect(plataforma.diccionario_rectangulos["rectangulo_superior"])):
+            #     jugador.bandera_esta_saltando = True
+            #     break
+
 def mover_personaje(jugador:object, velocidad_de_movimiento:int):
     jugador.rectangulo.x += velocidad_de_movimiento
+    for clave in jugador.diccionario_rectangulos:
+        jugador.diccionario_rectangulos[clave].x += velocidad_de_movimiento
 
 def animar_personaje(pantalla:object, jugador:object, accion_personaje:list) -> None:
     largo = len(accion_personaje)
@@ -41,19 +49,19 @@ def actualizar_pantalla(pantalla:object, jugador:object, lista_plataformas:list)
 
     match jugador.que_hace:
         case "Derecha":
-            if not jugador.bandera_esta_saltando:
+            if jugador.bandera_esta_saltando == False:
                 animar_personaje(pantalla, jugador, jugador.corriendo_mirando_derecha)
             mover_personaje(jugador, jugador.velocidad_de_movimiento)
         case "Izquierda":
-            if not jugador.bandera_esta_saltando:
+            if jugador.bandera_esta_saltando == False:
                 animar_personaje(pantalla, jugador, jugador.corriendo_mirando_izquierda)
             mover_personaje(jugador, -jugador.velocidad_de_movimiento)
         case "Salta":
-            if not jugador.bandera_esta_saltando:
+            if jugador.bandera_esta_saltando == False:
                 jugador.bandera_esta_saltando = True
                 jugador.desplazamiento_y = jugador.potencia_salto
         case "Quieto":
-            if not jugador.bandera_esta_saltando:
+            if jugador.bandera_esta_saltando == False:
                 if jugador.ultima_direccion == "Derecha":
                     animar_personaje(pantalla, jugador, jugador.quieto_mirando_derecha)
                 elif jugador.ultima_direccion == "Izquierda":
@@ -65,3 +73,25 @@ def girar_lista_imagenes(lista:list) -> list:
     for imagen in lista:        
         retorno.append(pygame.transform.flip(imagen, True, False))
     return retorno
+
+def identificar_input(lista_teclas_presionadas:list, pantalla:object, jugador:object):
+    if (lista_teclas_presionadas[pygame.K_RIGHT] and jugador.rectangulo.colliderect(pantalla.rectangulo) and jugador.rectangulo.right != pantalla.rectangulo.right):# jugador.rectangulo.right < ANCHO_PANTALLA - jugador.velocidad_de_movimiento
+        jugador.que_hace = "Derecha"
+        jugador.ultima_direccion = "Derecha"
+    elif (lista_teclas_presionadas[pygame.K_LEFT] and jugador.rectangulo.colliderect(pantalla.rectangulo) and jugador.rectangulo.left != pantalla.rectangulo.left):
+        jugador.que_hace = "Izquierda"
+        jugador.ultima_direccion = "Izquierda"
+    elif (lista_teclas_presionadas[pygame.K_UP]):
+        jugador.que_hace = "Salta"
+    else:
+        jugador.que_hace = "Quieto"
+
+def obtener_rectangulos(objeto:object):
+    objeto.diccionario_rectangulos["rectangulo_inferior"] = pygame.Rect(objeto.rectangulo.left, objeto.rectangulo.bottom - 10, objeto.rectangulo.width, 10)
+    objeto.diccionario_rectangulos["rectangulo_derecho"] = pygame.Rect(objeto.rectangulo.right - 2, objeto.rectangulo.top, 2, objeto.rectangulo.height)
+    objeto.diccionario_rectangulos["rectangulo_izquierdo"] = pygame.Rect(objeto.rectangulo.left, objeto.rectangulo.top, 2, objeto.rectangulo.height)
+    objeto.diccionario_rectangulos["rectangulo_superior"] = pygame.Rect(objeto.rectangulo.left, objeto.rectangulo.top, objeto.rectangulo.width, 6)
+
+def dibujar_rectangulos(pantalla:object, diccionario_rectangulos:dict, color:str, grosor:int) -> None:
+    for clave in diccionario_rectangulos:
+            pygame.draw.rect(pantalla.pantalla, color, diccionario_rectangulos[clave], grosor)

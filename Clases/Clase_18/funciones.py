@@ -60,3 +60,15 @@ def girar_lista_imagenes(lista:list) -> list:
     for imagen in lista:        
         retorno.append(pygame.transform.flip(imagen, True, False))
     return retorno
+
+def registrar_ingreso_teclas(lista_teclas_presionadas:list, pantalla:object, jugador:object) -> None:
+    if (lista_teclas_presionadas[pygame.K_RIGHT] and jugador.rectangulo.colliderect(pantalla.rectangulo) and jugador.rectangulo.right != pantalla.rectangulo.right):# jugador.rectangulo.right < ANCHO_PANTALLA - jugador.velocidad_de_movimiento
+        jugador.que_hace = "Derecha"
+        jugador.ultima_direccion = "Derecha"
+    elif (lista_teclas_presionadas[pygame.K_LEFT] and jugador.rectangulo.colliderect(pantalla.rectangulo) and jugador.rectangulo.left != pantalla.rectangulo.left):
+        jugador.que_hace = "Izquierda"
+        jugador.ultima_direccion = "Izquierda"
+    elif (lista_teclas_presionadas[pygame.K_UP]):
+        jugador.que_hace = "Salta"
+    else:
+        jugador.que_hace = "Quieto"
