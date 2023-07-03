@@ -1,6 +1,7 @@
 import pygame
 
 def aplicar_gravedad(pantalla:object, jugador:object, suelo:object, lista_plataformas:list):
+    print("Bandera de 'jugador.bandera_esta_saltando':", jugador.bandera_esta_saltando)
     if jugador.bandera_esta_saltando == True:
         if jugador.ultima_direccion == "Derecha":
                 animar_personaje(pantalla, jugador, jugador.saltando_mirando_derecha)
