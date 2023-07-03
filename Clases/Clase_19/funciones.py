@@ -2,6 +2,7 @@ import pygame
 
 def aplicar_gravedad(pantalla:object, jugador:object, suelo:object, lista_plataformas:list):
     print("Bandera de 'jugador.bandera_esta_saltando':", jugador.bandera_esta_saltando)
+
     if jugador.bandera_esta_saltando == True:
         if jugador.ultima_direccion == "Derecha":
                 animar_personaje(pantalla, jugador, jugador.saltando_mirando_derecha)
@@ -9,29 +10,26 @@ def aplicar_gravedad(pantalla:object, jugador:object, suelo:object, lista_plataf
                 animar_personaje(pantalla, jugador, jugador.saltando_mirando_izquierda)
         
         jugador.rectangulo.y += jugador.desplazamiento_y
+        
         for clave in jugador.diccionario_rectangulos:
             jugador.diccionario_rectangulos[clave].y += jugador.desplazamiento_y
 
         if jugador.desplazamiento_y + jugador.gravedad < jugador.velocidad_limite_caida:
             jugador.desplazamiento_y += jugador.gravedad
 
-        if jugador.diccionario_rectangulos["rectangulo_inferior"].colliderect(suelo.diccionario_rectangulos["rectangulo_superior"]) == True:
-            jugador.bandera_esta_saltando = False
-            jugador.desplazamiento_y = 0
-            jugador.rectangulo.bottom = suelo.rectangulo.top
-        else:
-            for plataforma in lista_plataformas:            
-                if jugador.diccionario_rectangulos["rectangulo_inferior"].colliderect(plataforma.diccionario_rectangulos["rectangulo_superior"]):
-                    jugador.bandera_esta_saltando = False
-                    jugador.desplazamiento_y = 0
-                    jugador.rectangulo.bottom = plataforma.rectangulo.top
-                    break
-                else:
-                    jugador.bandera_esta_saltando = True
-
-            # elif not (jugador.diccionario_rectangulos["rectangulo_inferior"].colliderect(plataforma.diccionario_rectangulos["rectangulo_superior"])):
-            #     jugador.bandera_esta_saltando = True
-            #     break
+    if jugador.diccionario_rectangulos["rectangulo_inferior"].colliderect(suelo.diccionario_rectangulos["rectangulo_superior"]) == True:
+        jugador.bandera_esta_saltando = False
+        jugador.desplazamiento_y = 0
+        jugador.rectangulo.bottom = suelo.rectangulo.top
+    else:
+        for plataforma in lista_plataformas:            
+            if jugador.diccionario_rectangulos["rectangulo_inferior"].colliderect(plataforma.diccionario_rectangulos["rectangulo_superior"]):
+                jugador.desplazamiento_y = 0
+                jugador.bandera_esta_saltando = False                
+                jugador.rectangulo.bottom = plataforma.rectangulo.top
+                break
+            else:
+                jugador.bandera_esta_saltando = True
 
 def comprobar_personaje_contacto(rectangulo:object, suelo:object, lista_rectangulos:list) -> bool:
     if rectangulo.colliderect(suelo.diccionario_rectangulos["rectangulo_superior"]):
