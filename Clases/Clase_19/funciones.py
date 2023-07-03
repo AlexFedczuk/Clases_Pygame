@@ -1,6 +1,6 @@
 import pygame
 
-def aplicar_gravedad(pantalla:object, jugador:object, lista_plataformas:list):
+def aplicar_gravedad(pantalla:object, jugador:object, suelo:object, lista_plataformas:list):
     if jugador.bandera_esta_saltando == True:
         if jugador.ultima_direccion == "Derecha":
                 animar_personaje(pantalla, jugador, jugador.saltando_mirando_derecha)
@@ -14,18 +14,34 @@ def aplicar_gravedad(pantalla:object, jugador:object, lista_plataformas:list):
         if jugador.desplazamiento_y + jugador.gravedad < jugador.velocidad_limite_caida:
             jugador.desplazamiento_y += jugador.gravedad
 
-        for plataforma in lista_plataformas:            
-            if jugador.diccionario_rectangulos["rectangulo_inferior"].colliderect(plataforma.diccionario_rectangulos["rectangulo_superior"]):
-                jugador.bandera_esta_saltando = False
-                jugador.desplazamiento_y = 0
-                jugador.rectangulo.bottom = plataforma.rectangulo.top
-                break
-            else:
-                jugador.bandera_esta_saltando = True
+        if jugador.diccionario_rectangulos["rectangulo_inferior"].colliderect(suelo.diccionario_rectangulos["rectangulo_superior"]) == True:
+            jugador.bandera_esta_saltando = False
+            jugador.desplazamiento_y = 0
+            jugador.rectangulo.bottom = suelo.rectangulo.top
+        else:
+            for plataforma in lista_plataformas:            
+                if jugador.diccionario_rectangulos["rectangulo_inferior"].colliderect(plataforma.diccionario_rectangulos["rectangulo_superior"]):
+                    jugador.bandera_esta_saltando = False
+                    jugador.desplazamiento_y = 0
+                    jugador.rectangulo.bottom = plataforma.rectangulo.top
+                    break
+                else:
+                    jugador.bandera_esta_saltando = True
 
             # elif not (jugador.diccionario_rectangulos["rectangulo_inferior"].colliderect(plataforma.diccionario_rectangulos["rectangulo_superior"])):
             #     jugador.bandera_esta_saltando = True
             #     break
+
+def comprobar_personaje_contacto(rectangulo:object, suelo:object, lista_rectangulos:list) -> bool:
+    if rectangulo.colliderect(suelo.diccionario_rectangulos["rectangulo_superior"]):
+        return True
+    else:
+        for rectangulo_lista in lista_rectangulos:
+            if rectangulo.colliderect(rectangulo_lista.diccionario_rectangulos["rectangulo_superior"]):
+                return True
+            else:
+                return False
+
 
 def mover_personaje(jugador:object, velocidad_de_movimiento:int):
     jugador.rectangulo.x += velocidad_de_movimiento
@@ -42,10 +58,11 @@ def animar_personaje(pantalla:object, jugador:object, accion_personaje:list) -> 
     # pygame.transform.flip(self.imagen, True, False), self.rectangulo
     jugador.contador_pasos += 1
 
-def actualizar_pantalla(pantalla:object, jugador:object, lista_plataformas:list) -> None:    
-    pantalla.pantalla.blit(pantalla.fondo, (0,0))
+def actualizar_pantalla(pantalla:object, jugador:object, suelo:object, lista_plataformas:list) -> None:    
+    renderizar_imagen(pantalla, pantalla.fondo, 0, 0)
     for plataforma in lista_plataformas:
-        pantalla.pantalla.blit(plataforma.imagen, (plataforma.rectangulo.x, plataforma.rectangulo.y))
+        renderizar_imagen(pantalla, plataforma.imagen, plataforma.rectangulo.x, plataforma.rectangulo.y)
+    renderizar_imagen(pantalla, suelo.imagen, suelo.rectangulo.x, suelo.rectangulo.y)
 
     match jugador.que_hace:
         case "Derecha":
@@ -66,7 +83,7 @@ def actualizar_pantalla(pantalla:object, jugador:object, lista_plataformas:list)
                     animar_personaje(pantalla, jugador, jugador.quieto_mirando_derecha)
                 elif jugador.ultima_direccion == "Izquierda":
                     animar_personaje(pantalla, jugador, jugador.quieto_mirando_izquierda)
-    aplicar_gravedad(pantalla, jugador, lista_plataformas)
+    aplicar_gravedad(pantalla, jugador, suelo, lista_plataformas)
 
 def girar_lista_imagenes(lista:list) -> list:
     retorno = []
@@ -95,3 +112,6 @@ def obtener_rectangulos(objeto:object):
 def dibujar_rectangulos(pantalla:object, diccionario_rectangulos:dict, color:str, grosor:int) -> None:
     for clave in diccionario_rectangulos:
             pygame.draw.rect(pantalla.pantalla, color, diccionario_rectangulos[clave], grosor)
+
+def renderizar_imagen(pantalla:object, imagen:object, x:int, y:int):
+    pantalla.pantalla.blit(imagen, (x, y))

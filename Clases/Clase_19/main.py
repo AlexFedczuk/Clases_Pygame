@@ -20,8 +20,8 @@ suelo = Suelo("Clases\Clase_19\Recursos\suelo\\2.png", (ANCHO_PANTALLA, 50), 0, 
 
 # Plataforma
 lista_plataformas = [
-    suelo,
-    Plataforma((100, 20), "Clases\Clase_19\Recursos\plataforma\\14.png", 800, 800)
+    Plataforma((100, 20), "Clases\Clase_19\Recursos\plataforma\\14.png", 800, 800),
+    Plataforma((100, 20), "Clases\Clase_19\Recursos\plataforma\\14.png", 900, 750)
 ]
 
 while True:
@@ -36,10 +36,10 @@ while True:
 
     teclas_presionadas = pygame.key.get_pressed()
 
-    # Identificacion de teclas ingresadas en los eventos
+    # Identificacion de teclas ingresadas en los eventos.
     identificar_input(teclas_presionadas, pantalla, jugador)
-
-    actualizar_pantalla(pantalla, jugador, lista_plataformas)
+    # Funcion donde se realiza la logica del juego.
+    actualizar_pantalla(pantalla, jugador, suelo, lista_plataformas)
 
     if get_mode():
         dibujar_rectangulos(pantalla, jugador.diccionario_rectangulos, "Red", 2)
