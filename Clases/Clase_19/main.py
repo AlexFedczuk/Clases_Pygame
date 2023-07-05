@@ -20,8 +20,11 @@ suelo = Suelo("Clases\Clase_19\Recursos\suelo\\2.png", (ANCHO_PANTALLA, 50), 0, 
 
 # Plataforma
 lista_plataformas = [
-    Plataforma((100, 20), "Clases\Clase_19\Recursos\plataforma\\14.png", 800, 800),
-    Plataforma((100, 20), "Clases\Clase_19\Recursos\plataforma\\14.png", 950, 750)
+    Plataforma((200, 20), "Clases\Clase_19\Recursos\plataforma\\14.png", 800, 800),
+    Plataforma((100, 20), "Clases\Clase_19\Recursos\plataforma\\14.png", 1050, 705),
+    Plataforma((100, 20), "Clases\Clase_19\Recursos\plataforma\\14.png", 800, 650),
+    Plataforma((100, 20), "Clases\Clase_19\Recursos\plataforma\\14.png", 500, 650),
+    Plataforma((100, 20), "Clases\Clase_19\Recursos\plataforma\\14.png", 300, 520)
 ]
 
 while True:
