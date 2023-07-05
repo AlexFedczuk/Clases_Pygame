@@ -23,7 +23,7 @@ class FormPrueba(Form):
         self.play_button = Button(self._slave, x, y, 100, 100, 100, 50, "Red", "Blue", self.button_play_click, "Nombre", "Pause music", font = "Verdana", font_size = 15, font_color = "White")
         self.label_volumen = Label(self._slave, 650, 190, 100, 50, "10%", "Comic Sans", 15, "White", "Clases\Clase_21\\recursos\\table.png")
         self.slider_volumen = Slider(self._slave, x, y, 100, 200, 500, 15, self.volumen, "Blue", "White")
-        self.tabla_button = Button_Image(self._slave, x, y, 255, 100, 50, 50, "Clases\Clase_21\\recursos\home_button.png", self.button_tabla_click, "Boton para ir a la Tabla...")
+        self.tabla_button = Button_Image(self._slave, x, y, 255, 100, 50, 50, "Clases\Clase_21\\archivos_GUI\\tabla.png", self.button_tabla_click, "Boton para ir a la Tabla...")
         # ---------------------------------  AGREGO LOS CONTROLES A LA LISTA --------------------- #
         self.lista_widgets.append(self.text_box)
         self.lista_widgets.append(self.play_button)
