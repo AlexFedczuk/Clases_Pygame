@@ -1,6 +1,6 @@
-import pygame
-from GUI.GUI_widget import Widget
-import math
+import pygame, math
+from GUI_widget import Widget
+
 class Slider(Widget):
     def __init__(self,screen, master_x, master_y, x,y,w,h, value,color_background,  color_circulo):
         super().__init__(screen, x,y,w,h,color_background)
@@ -28,9 +28,7 @@ class Slider(Widget):
         self.rectangulo_circulo.center = (x + w * value, self.slave_rect.centery)
 
         diagonal = math.sqrt(w_circulo**2 + h_circulo**2)
-        self.radio_circulo = diagonal / 2
-
-        
+        self.radio_circulo = diagonal / 2        
 
         self.render()
     

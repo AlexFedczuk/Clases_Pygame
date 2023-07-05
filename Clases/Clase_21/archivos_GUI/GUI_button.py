@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from GUI.GUI_widget import *
+from GUI_widget import *
 
 class Button(Widget):
     def __init__(self, screen,master_x,master_y, x,y,w,h,color_background,color_border, onclick, onclick_param, text, font, font_size, font_color):
@@ -19,9 +19,7 @@ class Button(Widget):
         self.isclicked = False
         
         self.render()
-        
-        
- 
+
     def render(self):
         image_text = self._font.render(self._text, True, self._font_color, self._color_background)
         
@@ -33,8 +31,7 @@ class Button(Widget):
         
         self.slave_rect_collide = pygame.Rect(self.slave_rect)
         self.slave_rect_collide.x += self._master_x
-        self.slave_rect_collide.y += self._master_y 
-        
+        self.slave_rect_collide.y += self._master_y         
         
         self._slave.fill(self._color_background)
         

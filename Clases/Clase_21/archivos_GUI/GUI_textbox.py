@@ -1,12 +1,10 @@
-import pygame
+import pygame, unicodedata
 from pygame.locals import *
-from GUI.GUI_widget import *
-import unicodedata
+from GUI_widget import *
 
 FPS = 18
 #si creo un att del self en un metodo, eso impacta sobre la clase actual, o lo crea a nivel de la jerarquia de clases? por ej self.slave
 #solo lo crea en button o en widget
-
     
 class TextBox(Widget):
     def __init__(
@@ -48,8 +46,7 @@ class TextBox(Widget):
         
         self.slave_rect_collide = pygame.Rect(self.slave_rect)
         self.slave_rect_collide.x += self._master_x
-        self.slave_rect_collide.y += self._master_y
-        
+        self.slave_rect_collide.y += self._master_y        
         
         self._slave.fill(self._color_background)
         
@@ -61,8 +58,7 @@ class TextBox(Widget):
         diferencia_horizontal = media_horizontal - media_texto_horizontal 
         diferencia_vertical = media_vertical - media_texto_vertical
         
-        self._slave.blit(image_text,(diferencia_horizontal,diferencia_vertical))#podriamos sacar cuentas para centrar el texto, por el momento 10-10
-        
+        self._slave.blit(image_text,(diferencia_horizontal,diferencia_vertical))#podriamos sacar cuentas para centrar el texto, por el momento 10-10        
     
     def update(self, lista_eventos):
         for evento in lista_eventos:
