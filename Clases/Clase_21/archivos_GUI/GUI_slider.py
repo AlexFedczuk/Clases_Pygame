@@ -1,11 +1,11 @@
 import pygame, math
-from GUI_widget import Widget
+from archivos_GUI.GUI_widget import Widget
 
 class Slider(Widget):
     def __init__(self,screen, master_x, master_y, x,y,w,h, value,color_background,  color_circulo):
         super().__init__(screen, x,y,w,h,color_background)
 
-        self.bar = pygame.image.load("GUI\\bar_slider.png")
+        self.bar = pygame.image.load("Clases\Clase_21\\recursos\\bar.png")
         self.bar = pygame.transform.scale(self.bar,(w,h)) 
 
         self.value = value

@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from GUI_button import *
+from archivos_GUI.GUI_button import *
 
 # No se instancia. Es la base de la Jerarquia!
 class Form(Widget):
@@ -32,6 +32,7 @@ class Form(Widget):
  
     def render(self):
         pass
+    
     def update(self, lista_eventos):
         pass
     
