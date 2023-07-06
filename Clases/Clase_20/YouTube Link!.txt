@@ -1,1 +1,6 @@
+TEMA: try:
+        pass
+      except:
+        pass
+
 Link: https://www.youtube.com/watch?v=SZJyGCexRjg&list=PLE9qW09sJEPQBZx_WJM46jkrtlY9FFlxb&index=17
