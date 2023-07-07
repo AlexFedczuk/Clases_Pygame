@@ -39,8 +39,8 @@ class NivelUno(Nivel):
         diccionario_animaciones["quieto_mirando_izquierda"] = PERSONAJE_QUIETO_MIRANDO_IZQUIERDA
         diccionario_animaciones["quieto_corriendo_derecha"] = PERSONAJE_CORRIENDO_MIRANDO_DERECHA
         diccionario_animaciones["quieto_corriendo_izquierda"] = PERSONAJE_CORRIENDO_MIRANDO_IZQUIERDA
-        diccionario_animaciones["quieto_saltando_derecha"] = PERSONAJE_CORRIENDO_MIRANDO_DERECHA
-        diccionario_animaciones["quieto_saltando_izquierda"] = PERSONAJE_CORRIENDO_MIRANDO_IZQUIERDA
+        diccionario_animaciones["quieto_saltando_derecha"] = PERSONAJE_SALTANDO_MIRANDO_DERECHA
+        diccionario_animaciones["quieto_saltando_izquierda"] = PERSONAJE_SALTANDO_MIRANDO_IZQUIERDA
 
         super().__init__(pantalla, personaje_principal, suelo, lista_plataformas, imagen_fondo)
 
